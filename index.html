@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PROPRETÉ LASER CI - Gestion</title>
+  <title>PROPRETÉ LASER CI - Cloud & Médias</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800">
 
-  <!-- Entête -->
   <header class="bg-blue-900 text-white p-4 shadow-md">
     <div class="max-w-4xl mx-auto flex justify-between items-center">
       <h1 class="text-xl font-bold tracking-wide">PROPRETÉ LASER CI</h1>
-      <span class="text-xs bg-blue-700 px-2 py-1 rounded">Gestionnaire</span>
+      <span class="text-xs bg-green-600 px-2 py-1 rounded">En Ligne (Cloud)</span>
     </div>
   </header>
 
@@ -36,54 +36,50 @@
 
     <!-- Formulaire 1: Nouveau Chantier -->
     <section class="bg-white p-4 rounded-xl shadow space-y-3">
-      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
-        <span>➕</span> Nouveau Chantier / Contrat
-      </h2>
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">➕ Nouveau Chantier / Contrat</h2>
       <form id="formChantier" class="space-y-3">
-        <input type="text" id="nomChantier" placeholder="Nom du chantier" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
-        <input type="number" id="montantContrat" placeholder="Montant contrat (FCFA)" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
-        <button type="submit" class="w-full bg-blue-900 text-white font-bold py-2 rounded-lg text-sm hover:bg-blue-800">Créer Chantier</button>
+        <input type="text" id="nomChantier" placeholder="Nom du chantier" required class="w-full p-2 border rounded-lg text-sm">
+        <input type="number" id="montantContrat" placeholder="Montant contrat (FCFA)" required class="w-full p-2 border rounded-lg text-sm">
+        <button type="submit" class="w-full bg-blue-900 text-white font-bold py-2 rounded-lg text-sm">Créer Chantier</button>
       </form>
     </section>
 
-    <!-- Formulaire 2: Enregistrer du Travail -->
+    <!-- Formulaire 2: Enregistrer du Travail du jour (Photo / Vidéo) -->
     <section class="bg-white p-4 rounded-xl shadow space-y-3">
-      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
-        <span>📸</span> Enregistrer du Travail du jour
-      </h2>
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">📸 Enregistrer Travail (Photo / Vidéo)</h2>
       <form id="formTravail" class="space-y-3">
-        <select id="selectChantierTravail" required class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:outline-blue-600">
+        <select id="selectChantierTravail" required class="w-full p-2 border rounded-lg text-sm bg-gray-50">
           <option value="">Sélectionner un chantier...</option>
         </select>
-        <textarea id="descTravail" placeholder="Description des travaux réalisés..." required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600"></textarea>
-        <button type="submit" class="w-full bg-green-700 text-white font-bold py-2 rounded-lg text-sm hover:bg-green-600">Enregistrer le travail</button>
+        <textarea id="descTravail" placeholder="Description des travaux réalisés..." required class="w-full p-2 border rounded-lg text-sm"></textarea>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Joindre une Photo ou Vidéo :</label>
+          <input type="file" id="mediaFile" accept="image/*,video/*" class="w-full text-sm text-gray-500 border rounded-lg p-1">
+        </div>
+        <button type="submit" id="btnSubmitTravail" class="w-full bg-green-700 text-white font-bold py-2 rounded-lg text-sm">Enregistrer le travail</button>
       </form>
     </section>
 
     <!-- Formulaire 3: Enregistrer une Dépense -->
     <section class="bg-white p-4 rounded-xl shadow space-y-3">
-      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
-        <span>💸</span> Enregistrer une Dépense
-      </h2>
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">💸 Enregistrer une Dépense</h2>
       <form id="formDepense" class="space-y-3">
-        <select id="selectChantierDepense" required class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:outline-blue-600">
+        <select id="selectChantierDepense" required class="w-full p-2 border rounded-lg text-sm bg-gray-50">
           <option value="">Sélectionner un chantier...</option>
         </select>
-        <input type="text" id="motifDepense" placeholder="Motif (ex: Produit vitre)" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
-        <input type="number" id="montantDepense" placeholder="Montant (FCFA)" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
-        <button type="submit" class="w-full bg-red-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-red-500">Ajouter la dépense</button>
+        <input type="text" id="motifDepense" placeholder="Motif (ex: Achat produit)" required class="w-full p-2 border rounded-lg text-sm">
+        <input type="number" id="montantDepense" placeholder="Montant (FCFA)" required class="w-full p-2 border rounded-lg text-sm">
+        <button type="submit" class="w-full bg-red-600 text-white font-bold py-2 rounded-lg text-sm">Ajouter la dépense</button>
       </form>
     </section>
 
     <!-- Formulaire 4: Personnels / Agents -->
     <section class="bg-white p-4 rounded-xl shadow space-y-3">
-      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
-        <span>👷</span> Personnels / Agents
-      </h2>
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">👷 Personnels / Agents</h2>
       <form id="formAgent" class="space-y-3">
-        <input type="text" id="nomAgent" placeholder="Nom & Prénom" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
-        <input type="text" id="roleAgent" placeholder="Rôle (ex: Nettoyeur)" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
-        <button type="submit" class="w-full bg-slate-800 text-white font-bold py-2 rounded-lg text-sm hover:bg-slate-700">Ajouter l'agent</button>
+        <input type="text" id="nomAgent" placeholder="Nom & Prénom" required class="w-full p-2 border rounded-lg text-sm">
+        <input type="text" id="roleAgent" placeholder="Rôle (ex: Nettoyeur)" required class="w-full p-2 border rounded-lg text-sm">
+        <button type="submit" class="w-full bg-slate-800 text-white font-bold py-2 rounded-lg text-sm">Ajouter l'agent</button>
       </form>
       <div class="mt-4">
         <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Liste du personnel</h3>
@@ -93,27 +89,31 @@
 
     <!-- Historique -->
     <section class="bg-white p-4 rounded-xl shadow space-y-3">
-      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
-        <span>📋</span> Historique des Chantiers & Travaux
-      </h2>
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">📋 Historique des Chantiers & Médias</h2>
       <div id="historiqueContenu" class="space-y-3 text-sm"></div>
     </section>
 
   </main>
 
   <script>
-    // Chargement des données locales
-    let chantiers = JSON.parse(localStorage.getItem('chantiers')) || [];
-    let agents = JSON.parse(localStorage.getItem('agents')) || [];
-    let travaux = JSON.parse(localStorage.getItem('travaux')) || [];
-    let depenses = JSON.parse(localStorage.getItem('depenses')) || [];
+    // Config Supabase (Collez vos identifiants ci-dessous)
+    NEXT_PUBLIC_SUPABASE_URL=https://tiwwunoxndqhxjwktyvd.supabase.co;
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_5kOAwZ1jVAjvNdwVCQAp1A_ohXgKqoV;
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function sauvegarderEtRendre() {
-      localStorage.setItem('chantiers', JSON.stringify(chantiers));
-      localStorage.setItem('agents', JSON.stringify(agents));
-      localStorage.setItem('travaux', JSON.stringify(travaux));
-      localStorage.setItem('depenses', JSON.stringify(depenses));
-      
+    let chantiers = [], agents = [], travaux = [], depenses = [];
+
+    async function chargerDonneesCloud() {
+      const { data: dataC } = await supabase.from('chantiers').select('*');
+      const { data: dataA } = await supabase.from('agents').select('*');
+      const { data: dataT } = await supabase.from('travaux').select('*');
+      const { data: dataD } = await supabase.from('depenses').select('*');
+
+      chantiers = dataC || [];
+      agents = dataA || [];
+      travaux = dataT || [];
+      depenses = dataD || [];
+
       calculerBilan();
       remplirSelects();
       afficherAgents();
@@ -165,8 +165,8 @@
       }
 
       container.innerHTML = chantiers.map(c => {
-        const travauxChantier = travaux.filter(t => t.chantierId == c.id);
-        const depensesChantier = depenses.filter(d => d.chantierId == c.id);
+        const travauxChantier = travaux.filter(t => t.chantier_id == c.id);
+        const depensesChantier = depenses.filter(d => d.chantier_id == c.id);
 
         return `
           <div class="border rounded-lg p-3 bg-gray-50 space-y-2">
@@ -175,8 +175,13 @@
               <span>${Number(c.montant).toLocaleString()} FCFA</span>
             </div>
             <div>
-              <p class="text-xs font-semibold text-gray-500">Travaux :</p>
-              ${travauxChantier.length ? travauxChantier.map(t => `<p class="text-xs text-gray-700">• ${t.desc}</p>`).join('') : '<p class="text-xs text-gray-400 italic">Aucun travail enregistré</p>'}
+              <p class="text-xs font-semibold text-gray-500">Travaux & Médias :</p>
+              ${travauxChantier.length ? travauxChantier.map(t => `
+                <div class="mt-1">
+                  <p class="text-xs text-gray-700">• ${t.description}</p>${t.photo_url ? `<img src="${t.photo_url}" class="mt-1 max-h-40 rounded shadow-sm">` : ''}
+                  ${t.video_url ? `<video src="${t.video_url}" controls class="mt-1 max-h-40 w-full rounded shadow-sm"></video>` : ''}
+                </div>
+              `).join('') : '<p class="text-xs text-gray-400 italic">Aucun travail enregistré</p>'}
             </div>
             <div>
               <p class="text-xs font-semibold text-gray-500">Dépenses :</p>
@@ -187,40 +192,68 @@
       }).join('');
     }
 
-    // Handlers de formulaires
-    document.getElementById('formChantier').addEventListener('submit', (e) => {
+    // Soumissions avec enregistrement Cloud
+    document.getElementById('formChantier').addEventListener('submit', async (e) => {
       e.preventDefault();
-      chantiers.push({ id: Date.now(), nom: document.getElementById('nomChantier').value, montant: document.getElementById('montantContrat').value });
+      await supabase.from('chantiers').insert([{ nom: document.getElementById('nomChantier').value, montant: document.getElementById('montantContrat').value }]);
       document.getElementById('nomChantier').value = '';
       document.getElementById('montantContrat').value = '';
-      sauvegarderEtRendre();
+      chargerDonneesCloud();
     });
 
-    document.getElementById('formTravail').addEventListener('submit', (e) => {
+    document.getElementById('formTravail').addEventListener('submit', async (e) => {
       e.preventDefault();
-      travaux.push({ id: Date.now(), chantierId: document.getElementById('selectChantierTravail').value, desc: document.getElementById('descTravail').value });
+      const btn = document.getElementById('btnSubmitTravail');
+      btn.innerText = 'Téléversement...';
+      btn.disabled = true;
+
+      const file = document.getElementById('mediaFile').files[0];
+      let photoUrl = null, videoUrl = null;
+
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}.${fileExt}`;
+        const { data, error } = await supabase.storage.from('chantiers-media').upload(fileName, file);
+
+        if (!error) {
+          const publicUrl = supabase.storage.from('chantiers-media').getPublicUrl(fileName).data.publicUrl;
+          if (file.type.startsWith('image/')) photoUrl = publicUrl;
+          if (file.type.startsWith('video/')) videoUrl = publicUrl;
+        }
+      }
+
+      await supabase.from('travaux').insert([{ 
+        chantier_id: document.getElementById('selectChantierTravail').value, 
+        description: document.getElementById('descTravail').value,
+        photo_url: photoUrl,
+        video_url: videoUrl
+      }]);
+
       document.getElementById('descTravail').value = '';
-      sauvegarderEtRendre();
+      document.getElementById('mediaFile').value = '';
+      btn.innerText = 'Enregistrer le travail';
+      btn.disabled = false;
+      chargerDonneesCloud();
     });
 
-    document.getElementById('formDepense').addEventListener('submit', (e) => {
+    document.getElementById('formDepense').addEventListener('submit', async (e) => {
       e.preventDefault();
-      depenses.push({ id: Date.now(), chantierId: document.getElementById('selectChantierDepense').value, motif: document.getElementById('motifDepense').value, montant: document.getElementById('montantDepense').value });
+      await supabase.from('depenses').insert([{ chantier_id: document.getElementById('selectChantierDepense').value, motif: document.getElementById('motifDepense').value, montant: document.getElementById('montantDepense').value }]);
       document.getElementById('motifDepense').value = '';
       document.getElementById('montantDepense').value = '';
-      sauvegarderEtRendre();
+      chargerDonneesCloud();
     });
 
-    document.getElementById('formAgent').addEventListener('submit', (e) => {
+    document.getElementById('formAgent').addEventListener('submit', async (e) => {
       e.preventDefault();
-      agents.push({ id: Date.now(), nom: document.getElementById('nomAgent').value, role: document.getElementById('roleAgent').value });
+      await supabase.from('agents').insert([{ nom: document.getElementById('nomAgent').value, role: document.getElementById('roleAgent').value }]);
       document.getElementById('nomAgent').value = '';
       document.getElementById('roleAgent').value = '';
-      sauvegarderEtRendre();
+      chargerDonneesCloud();
     });
 
-    // Initialisation
-    sauvegarderEtRendre();
+    // Chargement initial
+    chargerDonneesCloud();
   </script>
 </body>
 </html>
