@@ -1,227 +1,226 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROPRETÉ LASER CI - Gestion</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROPRETÉ LASER CI - Gestion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800">
 
-<!-- Entête -->
-<header class="bg-blue-900 text-white p-4 shadow-lg">
-<div class="max-w-4xl mx-auto flex justify-between items-center">
-<h1 class="text-xl font-bold tracking-wide">PROPRETÉ LASER CI</h1>
-<span class="text-xs bg-blue-700 px-2 py-1 rounded">Gestionnaire</span>
-</div>
-</header>
+  <!-- Entête -->
+  <header class="bg-blue-900 text-white p-4 shadow-md">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold tracking-wide">PROPRETÉ LASER CI</h1>
+      <span class="text-xs bg-blue-700 px-2 py-1 rounded">Gestionnaire</span>
+    </div>
+  </header>
 
-<main class="max-w-4xl mx-auto p-4 space-y-6">
+  <main class="max-w-4xl mx-auto p-4 space-y-6">
 
-<!-- Bilan Financier -->
-<section class="grid grid-cols-3 gap-3 text-center">
-<div class="bg-white p-3 rounded-xl shadow border-l-4 border-blue-600">
-<p class="text-xs text-gray-500 font-medium">Contrats Total</p>
-<p id="total-contrats" class="text-lg font-bold text-blue-900">0 FCFA</p>
-</div>
-<div class="bg-white p-3 rounded-xl shadow border-l-4 border-red-500">
-<p class="text-xs text-gray-500 font-medium">Dépenses</p>
-<p id="total-depenses" class="text-lg font-bold text-red-600">0 FCFA</p>
-</div>
-<div class="bg-white p-3 rounded-xl shadow border-l-4 border-green-500">
-<p class="text-xs text-gray-500 font-medium">Bénéfice Net</p>
-<p id="total-benefice" class="text-lg font-bold text-green-600">0 FCFA</p>
-</div>
-</section>
+    <!-- Bilan Financier -->
+    <section class="grid grid-cols-3 gap-3 text-center">
+      <div class="bg-white p-3 rounded-xl shadow border-l-4 border-blue-600">
+        <p class="text-xs text-gray-500 font-semibold">Contrats Total</p>
+        <p id="totalContrats" class="text-base font-bold text-blue-900">0 FCFA</p>
+      </div>
+      <div class="bg-white p-3 rounded-xl shadow border-l-4 border-red-500">
+        <p class="text-xs text-gray-500 font-semibold">Dépenses</p>
+        <p id="totalDepenses" class="text-base font-bold text-red-600">0 FCFA</p>
+      </div>
+      <div class="bg-white p-3 rounded-xl shadow border-l-4 border-green-500">
+        <p class="text-xs text-gray-500 font-semibold">Bénéfice Net</p>
+        <p id="beneficeNet" class="text-base font-bold text-green-600">0 FCFA</p>
+      </div>
+    </section>
 
-<!-- Formulaire rapide : Nouveau Chantier -->
-<section class="bg-white p-4 rounded-xl shadow">
-<h2 class="text-md font-bold mb-3 text-gray-700">➕ Nouveau Chantier / Contrat</h2>
-<form id="form-chantier" class="grid grid-cols-1 md:grid-cols-3 gap-2">
-<input type="text" id="chantier-nom" placeholder="Nom du chantier" required class="border p-2 rounded w-full text-sm">
-<input type="number" id="chantier-prix" placeholder="Montant contrat (FCFA)" required class="border p-2 rounded w-full text-sm">
-<button type="submit" class="bg-blue-900 text-white p-2 rounded font-medium text-sm hover:bg-blue-800">Créer Chantier</button>
-</form>
-</section>
+    <!-- Formulaire 1: Nouveau Chantier -->
+    <section class="bg-white p-4 rounded-xl shadow space-y-3">
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
+        <span>➕</span> Nouveau Chantier / Contrat
+      </h2>
+      <form id="formChantier" class="space-y-3">
+        <input type="text" id="nomChantier" placeholder="Nom du chantier" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
+        <input type="number" id="montantContrat" placeholder="Montant contrat (FCFA)" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
+        <button type="submit" class="w-full bg-blue-900 text-white font-bold py-2 rounded-lg text-sm hover:bg-blue-800">Créer Chantier</button>
+      </form>
+    </section>
 
-<!-- Formulaire : Enregistrer un Travail (avec Photo) -->
-<section class="bg-white p-4 rounded-xl shadow">
-<h2 class="text-md font-bold mb-3 text-gray-700">📸 Enregistrer du Travail du jour</h2>
-<form id="form-travail" class="space-y-3">
-<select id="travail-chantier" required class="border p-2 rounded w-full text-sm">
-<option value="">Sélectionner un chantier...</option>
-</select>
-<textarea id="travail-desc" placeholder="Description des travaux réalisés..." required class="border p-2 rounded w-full text-sm"></textarea>
-<input type="file" id="travail-photo" accept="image/*" class="border p-2 rounded w-full text-sm">
-<button type="submit" class="bg-green-700 text-white p-2 rounded font-medium text-sm w-full hover:bg-green-600">Enregistrer le travail</button>
-</form>
-</section>
+    <!-- Formulaire 2: Enregistrer du Travail -->
+    <section class="bg-white p-4 rounded-xl shadow space-y-3">
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
+        <span>📸</span> Enregistrer du Travail du jour
+      </h2>
+      <form id="formTravail" class="space-y-3">
+        <select id="selectChantierTravail" required class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:outline-blue-600">
+          <option value="">Sélectionner un chantier...</option>
+        </select>
+        <textarea id="descTravail" placeholder="Description des travaux réalisés..." required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600"></textarea>
+        <button type="submit" class="w-full bg-green-700 text-white font-bold py-2 rounded-lg text-sm hover:bg-green-600">Enregistrer le travail</button>
+      </form>
+    </section>
 
-<!-- Formulaire : Enregistrer une Dépense -->
-<section class="bg-white p-4 rounded-xl shadow">
-<h2 class="text-md font-bold mb-3 text-gray-700">💸 Enregistrer une Dépense</h2>
-<form id="form-depense" class="grid grid-cols-1 md:grid-cols-3 gap-2">
-<select id="depense-chantier" required class="border p-2 rounded w-full text-sm">
-<option value="">Sélectionner un chantier...</option>
-</select>
-<input type="text" id="depense-desc" placeholder="Motif (ex: Produit vitre)" required class="border p-2 rounded w-full text-sm">
-<input type="number" id="depense-montant" placeholder="Montant (FCFA)" required class="border p-2 rounded w-full text-sm">
-<button type="submit" class="bg-red-600 text-white p-2 rounded font-medium text-sm md:col-span-3 hover:bg-red-500">Ajouter la dépense</button>
-</form>
-</section>
+    <!-- Formulaire 3: Enregistrer une Dépense -->
+    <section class="bg-white p-4 rounded-xl shadow space-y-3">
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
+        <span>💸</span> Enregistrer une Dépense
+      </h2>
+      <form id="formDepense" class="space-y-3">
+        <select id="selectChantierDepense" required class="w-full p-2 border rounded-lg text-sm bg-gray-50 focus:outline-blue-600">
+          <option value="">Sélectionner un chantier...</option>
+        </select>
+        <input type="text" id="motifDepense" placeholder="Motif (ex: Produit vitre)" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
+        <input type="number" id="montantDepense" placeholder="Montant (FCFA)" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
+        <button type="submit" class="w-full bg-red-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-red-500">Ajouter la dépense</button>
+      </form>
+    </section>
 
-<!-- Formulaire : Ajouter un Travailleur -->
-<section class="bg-white p-4 rounded-xl shadow">
-<h2 class="text-md font-bold mb-3 text-gray-700">👷 Personnels / Agents</h2>
-<form id="form-travailleur" class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
-<input type="text" id="agent-nom" placeholder="Nom & Prénom" required class="border p-2 rounded w-full text-sm">
-<input type="text" id="agent-role" placeholder="Rôle (ex: Nettoyeur)" class="border p-2 rounded w-full text-sm">
-<button type="submit" class="bg-gray-800 text-white p-2 rounded font-medium text-sm hover:bg-gray-700">Ajouter l'agent</button>
-</form>
-<ul id="liste-agents" class="divide-y text-sm"></ul>
-</section>
+    <!-- Formulaire 4: Personnels / Agents -->
+    <section class="bg-white p-4 rounded-xl shadow space-y-3">
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
+        <span>👷</span> Personnels / Agents
+      </h2>
+      <form id="formAgent" class="space-y-3">
+        <input type="text" id="nomAgent" placeholder="Nom & Prénom" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
+        <input type="text" id="roleAgent" placeholder="Rôle (ex: Nettoyeur)" required class="w-full p-2 border rounded-lg text-sm focus:outline-blue-600">
+        <button type="submit" class="w-full bg-slate-800 text-white font-bold py-2 rounded-lg text-sm hover:bg-slate-700">Ajouter l'agent</button>
+      </form>
+      <div class="mt-4">
+        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Liste du personnel</h3>
+        <ul id="listeAgents" class="divide-y text-sm"></ul>
+      </div>
+    </section>
 
-<!-- Journal des Travaux et Photos -->
-<section class="bg-white p-4 rounded-xl shadow">
-<h2 class="text-md font-bold mb-3 text-gray-700">📋 Historique des Travaux Récents</h2>
-<div id="liste-travaux" class="space-y-3"></div>
-</section>
+    <!-- Historique -->
+    <section class="bg-white p-4 rounded-xl shadow space-y-3">
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
+        <span>📋</span> Historique des Chantiers & Travaux
+      </h2>
+      <div id="historiqueContenu" class="space-y-3 text-sm"></div>
+    </section>
 
-</main>
+  </main>
 
-<script>
-// Configuration Supabase
-const NEXT_PUBLIC_SUPABASE_URL=https://tiwwunoxndqhxjwktyvd.supabase.co;
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_5kOAwZ1jVAjvNdwVCQAp1A_ohXgKqoV;
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  <script>
+    // Chargement des données locales
+    let chantiers = JSON.parse(localStorage.getItem('chantiers')) || [];
+    let agents = JSON.parse(localStorage.getItem('agents')) || [];
+    let travaux = JSON.parse(localStorage.getItem('travaux')) || [];
+    let depenses = JSON.parse(localStorage.getItem('depenses')) || [];
 
-// Initialisation
-document.addEventListener("DOMContentLoaded", () => {
-chargerChantiers();
-chargerAgents();
-chargerTravaux();
-calculerFinances();
-});
+    function sauvegarderEtRendre() {
+      localStorage.setItem('chantiers', JSON.stringify(chantiers));
+      localStorage.setItem('agents', JSON.stringify(agents));
+      localStorage.setItem('travaux', JSON.stringify(travaux));
+      localStorage.setItem('depenses', JSON.stringify(depenses));
+      
+      calculerBilan();
+      remplirSelects();
+      afficherAgents();
+      afficherHistorique();
+    }
 
-// 1. Charger la liste des chantiers dans les menus déroulants
-async function chargerChantiers() {
-const { data, error } = await _supabase.from('chantiers').select('*');
-if (error) return console.error(error);
+    function calculerBilan() {
+      const totalC = chantiers.reduce((sum, c) => sum + Number(c.montant), 0);
+      const totalD = depenses.reduce((sum, d) => sum + Number(d.montant), 0);
+      const benefice = totalC - totalD;
 
-const selectTravail = document.getElementById('travail-chantier');
-const selectDepense = document.getElementById('depense-chantier');
+      document.getElementById('totalContrats').innerText = totalC.toLocaleString() + ' FCFA';
+      document.getElementById('totalDepenses').innerText = totalD.toLocaleString() + ' FCFA';
+      document.getElementById('beneficeNet').innerText = benefice.toLocaleString() + ' FCFA';
+    }
 
-selectTravail.innerHTML = '<option value="">Sélectionner un chantier...</option>';
-selectDepense.innerHTML = '<option value="">Sélectionner un chantier...</option>';
+    function remplirSelects() {
+      const selectTravail = document.getElementById('selectChantierTravail');
+      const selectDepense = document.getElementById('selectChantierDepense');
 
-data.forEach(c => {
-const opt = <option value="${c.id}">${c.nom} (${c.prix_contrat} FCFA)</option>`;
-selectTravail.innerHTML += opt;
-selectDepense.innerHTML += opt;
-});
-}
+      selectTravail.innerHTML = '<option value="">Sélectionner un chantier...</option>';
+      selectDepense.innerHTML = '<option value="">Sélectionner un chantier...</option>';
 
-// 2. Créer un chantier
-document.getElementById('form-chantier').addEventListener('submit', async (e) => {
-e.preventDefault();
-const nom = document.getElementById('chantier-nom').value;
-const prix = document.getElementById('chantier-prix').value;
+      chantiers.forEach(c => {
+        selectTravail.innerHTML += `<option value="${c.id}">${c.nom}</option>`;
+        selectDepense.innerHTML += `<option value="${c.id}">${c.nom}</option>`;
+      });
+    }
 
-const { error } = await _supabase.from('chantiers').insert([{ nom, prix_contrat: prix }]);
-if (!error) {
-e.target.reset();
-chargerChantiers();
-calculerFinances();
-}
-});
+    function afficherAgents() {
+      const listEl = document.getElementById('listeAgents');
+      if (agents.length === 0) {
+        listEl.innerHTML = '<li class="py-2 text-gray-400 italic">Aucun agent enregistré</li>';
+        return;
+      }
+      listEl.innerHTML = agents.map(a => `
+        <li class="py-2 flex justify-between items-center">
+          <span class="font-medium text-gray-800">${a.nom}</span>
+          <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">${a.role}</span>
+        </li>
+      `).join('');
+    }
 
-// 3. Enregistrer un travail (+ Upload Photo dans Bucket Supabase)
-document.getElementById('form-travail').addEventListener('submit', async (e) => {
-e.preventDefault();
-const chantier_id = document.getElementById('travail-chantier').value;
-const description = document.getElementById('travail-desc').value;
-const photoFile = document.getElementById('travail-photo').files[0];
-let image_url = null;
+    function afficherHistorique() {
+      const container = document.getElementById('historiqueContenu');
+      if (chantiers.length === 0) {
+        container.innerHTML = '<p class="text-gray-400 italic">Aucun chantier créé pour le moment.</p>';
+        return;
+      }
 
-if (photoFile) {
-const fileName = ``${Date.now()}_${photoFile.name};
-const { data, error: uploadErr } = await _supabase.storage.from('photos_chantiers').upload(fileName, photoFile);
-if (!uploadErr) {
-const { data: publicUrlData } = _supabase.storage.from('photos_chantiers').getPublicUrl(fileName);
-image_url = publicUrlData.publicUrl;
-}
-}
+      container.innerHTML = chantiers.map(c => {
+        const travauxChantier = travaux.filter(t => t.chantierId == c.id);
+        const depensesChantier = depenses.filter(d => d.chantierId == c.id);
 
-const { error } = await _supabase.from('travaux').insert([{ chantier_id, description, image_url }]);
-if (!error) {
-e.target.reset();
-chargerTravaux();
-}
-});
+        return `
+          <div class="border rounded-lg p-3 bg-gray-50 space-y-2">
+            <div class="flex justify-between items-center font-bold text-blue-900 border-b pb-1">
+              <span>${c.nom}</span>
+              <span>${Number(c.montant).toLocaleString()} FCFA</span>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-gray-500">Travaux :</p>
+              ${travauxChantier.length ? travauxChantier.map(t => `<p class="text-xs text-gray-700">• ${t.desc}</p>`).join('') : '<p class="text-xs text-gray-400 italic">Aucun travail enregistré</p>'}
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-gray-500">Dépenses :</p>
+              ${depensesChantier.length ? depensesChantier.map(d => `<p class="text-xs text-red-600">• ${d.motif} :${Number(d.montant).toLocaleString()} FCFA</p>`).join('') : '<p class="text-xs text-gray-400 italic">Aucune dépense</p>'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
-// 4. Enregistrer une dépense
-document.getElementById('form-depense').addEventListener('submit', async (e) => {
-e.preventDefault();
-const chantier_id = document.getElementById('depense-chantier').value;
-const description = document.getElementById('depense-desc').value;
-const montant = document.getElementById('depense-montant').value;
+    // Handlers de formulaires
+    document.getElementById('formChantier').addEventListener('submit', (e) => {
+      e.preventDefault();
+      chantiers.push({ id: Date.now(), nom: document.getElementById('nomChantier').value, montant: document.getElementById('montantContrat').value });
+      document.getElementById('nomChantier').value = '';
+      document.getElementById('montantContrat').value = '';
+      sauvegarderEtRendre();
+    });
 
-const { error } = await _supabase.from('depenses').insert([{ chantier_id, description, montant }]);
-if (!error) {
-e.target.reset();
-calculerFinances();
-}
-});
+    document.getElementById('formTravail').addEventListener('submit', (e) => {
+      e.preventDefault();
+      travaux.push({ id: Date.now(), chantierId: document.getElementById('selectChantierTravail').value, desc: document.getElementById('descTravail').value });
+      document.getElementById('descTravail').value = '';
+      sauvegarderEtRendre();
+    });
 
-// 5. Enregistrer un travailleur
-document.getElementById('form-travailleur').addEventListener('submit', async (e) => {
-e.preventDefault();
-const nom_prenom = document.getElementById('agent-nom').value;
-const role = document.getElementById('agent-role').value;
+    document.getElementById('formDepense').addEventListener('submit', (e) => {
+      e.preventDefault();
+      depenses.push({ id: Date.now(), chantierId: document.getElementById('selectChantierDepense').value, motif: document.getElementById('motifDepense').value, montant: document.getElementById('montantDepense').value });
+      document.getElementById('motifDepense').value = '';
+      document.getElementById('montantDepense').value = '';
+      sauvegarderEtRendre();
+    });
 
-const { error } = await _supabase.from('travailleurs').insert([{ nom_prenom, role }]);
-if (!error) {
-e.target.reset();
-chargerAgents();
-}
-});
+    document.getElementById('formAgent').addEventListener('submit', (e) => {
+      e.preventDefault();
+      agents.push({ id: Date.now(), nom: document.getElementById('nomAgent').value, role: document.getElementById('roleAgent').value });
+      document.getElementById('nomAgent').value = '';
+      document.getElementById('roleAgent').value = '';
+      sauvegarderEtRendre();
+    });
 
-// Charger la liste des agents
-async function chargerAgents() {
-const { data } = await _supabase.from('travailleurs').select('*');
-const list = document.getElementById('liste-agents');
-list.innerHTML = '';
-(data || []).forEach(a => {
-list.innerHTML += <li class="py-2 flex justify-between"&gt;&lt;span&gt;👤 &lt;strong&gt;${a.nom_prenom}</strong></span><span class="text-gray-500">${a.role || ''}&lt;/span&gt;&lt;/li>;
-});
-}
-
-// Charger l'historique des travaux
-async function chargerTravaux() {
-const { data } = await _supabase.from('travaux').select('*, chantiers(nom)').order('created_at', { ascending: false });
-const container = document.getElementById('liste-travaux');
-container.innerHTML = '';
-(data || []).forEach(t => {
-container.innerHTML += &lt;div class="border p-3 rounded-lg bg-gray-50 text-sm"&gt; &lt;p class="font-bold text-blue-900"&gt;${t.chantiers ? t.chantiers.nom : 'Chantier inconnu'}</p>
-<p class="text-gray-700 my-1"> {t.image_url ? <img src="${t.image_url}" class="h-32 object-cover rounded mt-2 border">: ''} &lt;span class="text-xs text-gray-400"&gt;${new Date(t.created_at).toLocaleDateString('fr-FR')}</span>
-</div>
-`;
-});
-}
-
-// Calcul des totaux financiers
-async function calculerFinances() {
-const { data: chantiers } = await _supabase.from('chantiers').select('prix_contrat');
-const { data: depenses } = await _supabase.from('depenses').select('montant');
-
-const totalContrats = (chantiers || []).reduce((sum, c) => sum + Number(c.prix_contrat || 0), 0);
-const totalDepenses = (depenses || []).reduce((sum, d) => sum + Number(d.montant || 0), 0);
-const benefice = totalContrats - totalDepenses;
-
-document.getElementById('total-contrats').innerText = ${totalContrats.toLocaleString('fr-FR')} FCFA; document.getElementById('total-depenses').innerText = ``${totalDepenses.toLocaleString('fr-FR')} FCFA;
-document.getElementById('total-benefice').innerText = ${benefice.toLocaleString('fr-FR')} FCFA;
-}
-</script>
+    // Initialisation
+    sauvegarderEtRendre();
+  </script>
 </body>
-  </html>
+</html>
